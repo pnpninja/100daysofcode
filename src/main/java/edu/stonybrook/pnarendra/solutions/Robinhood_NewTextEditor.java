@@ -37,11 +37,8 @@ public class Robinhood_NewTextEditor {
 						sb.append(laststr);
 						break;
 					case "Paste":
-						// sb.delete(sb.length() - copy.length(), sb.length());
 						sb.delete(sb.length() - laststr.length(), sb.length());
 						break;
-					// one case is mising here. im sure
-					// theres nothing for double undo
 					}
 				}
 				break;

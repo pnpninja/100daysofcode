@@ -1,43 +1,27 @@
-  
-
-def countPairs(arr1, arr2, x): 
-    map1 = {}
-    map2 = {}
+def countPairs(map1, map2, x): 
     count = 0
-    for i in range(0, len(arr1)):
-        if(map1.get(arr1[i]) == None):
-            map1[arr1[i]] = 1
-        else:
-            map1[arr1[i]] = map1[arr1[i]] + 1
-
-    for i in range(0, len(arr2)):
-        if(map2.get(arr2[i]) == None):
-            map2[arr2[i]] = 1
-        else:
-           map2[arr2[i]] = map2[arr2[i]] + 1
-
-    for key in map1.keys():
-        diff = x - map1.get(key)
-        if(map2.get(diff) != None):
-            count = count+map1.get(key)*map2.get(diff)
+    for key,value in map1.items():
+        diff = x - key
+        count = count+(value*map2.get(diff,0));
     return count
     
 
-def processQuery1(b,query):
-    b[query[1]] = query[2]
-    return b
-
-def processQuery2(a,b,query):
-    count = 0
-    return countPairs(a, b, query[1])
-
 def coolFeature(a, b, query):
     ans = []
+    map1 = {}
+    map2 = {}
+    for i in range(0, len(a)):
+        map1[a[i]] = map1.get(a[i],0) + 1
+    for i in range(0, len(b)):
+        map2[b[i]] = map2.get(b[i],0) + 1
+    
     for q in query:
         if(q[0] == 0):
-            b = processQuery1(b, q)
+            map2[b[q[1]]] = map2.get(b[q[1]]) - 1
+            b[q[1]] = q[2]
+            map2[b[q[1]]] = map2.get(b[q[1]],0) + 1
         else:
-            ans.append(processQuery2(a, b, q))
+            ans.append(countPairs(map1, map2, q[1]))
     return ans
 
 
