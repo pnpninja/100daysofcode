@@ -1,16 +1,20 @@
 package edu.stonybrook.pnarendra.solutions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-class Object{
+
+
+class Object2{
 	public char character;
 	public int currentCount;
 }
-public class Bloomberg_CandyCrush {
+public class Bloomberg_CandyCrushDP {
 	
 	public String crushString(String input) {
-		List<Object> stack = new ArrayList<Object>();
+		List<Object2> stack = new ArrayList<Object2>();
 		int currentPointer = 0;
 		while(currentPointer < input.length()) {
 			if(currentPointer == 0) {
@@ -36,7 +40,7 @@ public class Bloomberg_CandyCrush {
 		
 	}
 	
-	private void compressString(List<Object> stack) {
+	private void compressString(List<Object2> stack) {
 		if(stack.isEmpty()) {
 			return;
 		}else {
@@ -44,7 +48,7 @@ public class Bloomberg_CandyCrush {
 				if(stack.isEmpty()) {
 					break;
 				}else {
-					Object lastObject = stack.get(stack.size() - 1);
+					Object2 lastObject = stack.get(stack.size() - 1);
 					if(lastObject.currentCount >= 3) {
 						stack.remove(lastObject);
 					}
@@ -54,18 +58,18 @@ public class Bloomberg_CandyCrush {
 		}
 	}
 	
-	private void addToStack(List<Object> stack,char c) {
+	private void addToStack(List<Object2> stack,char c) {
 		if(stack.isEmpty()) {
-			Object newObject = new Object();
+			Object2 newObject = new Object2();
 			newObject.character = c;
 			newObject.currentCount = 1;
 			stack.add(newObject);
 		}else {
-			Object lastObject = stack.get(stack.size() - 1);
+			Object2 lastObject = stack.get(stack.size() - 1);
 			if(lastObject.character == c) {
 				lastObject.currentCount++;
 			}else {
-				Object newObject = new Object();
+				Object2 newObject = new Object2();
 				newObject.character = c;
 				newObject.currentCount = 1;
 				stack.add(newObject);
@@ -73,9 +77,9 @@ public class Bloomberg_CandyCrush {
 		}
 	}
 	
-	private String prepareOutput(List<Object> stack) {
+	private String prepareOutput(List<Object2> stack) {
 		StringBuilder sb = new StringBuilder();
-		for(Object obj : stack) {
+		for(Object2 obj : stack) {
 			for(int i = 0; i < obj.currentCount;i++) {
 				sb.append(obj.character);
 			}
@@ -85,12 +89,11 @@ public class Bloomberg_CandyCrush {
 	}
 	
 	public static void main(String[] args) {
-		String input = "aabbbaacd";
-		//input = "aaaabbbaaabacd";
-		//input = new StringBuilder(input).reverse().toString();
+		String input = "aaabbbacd";
+		input = "aabbbaaac";
+		input = new StringBuilder(input).reverse().toString();
 		String temp = new Bloomberg_CandyCrush().crushString(input);
-		System.out.println(temp);
+		System.out.println(new StringBuilder(temp).reverse().toString());
 		
 	}
-
 }
