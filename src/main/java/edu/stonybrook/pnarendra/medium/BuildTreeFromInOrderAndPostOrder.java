@@ -24,14 +24,6 @@ public class BuildTreeFromInOrderAndPostOrder {
         
     }
 	
-	public TreeNode buildTree(int[] inorder, int[] postorder, int inorderStart, 
-			int inorderEnd, int postorderStart, int postorderEnd) {
-		if(postorderStart < postorderEnd) {
-			return null;
-		}else if(postorderStart == postorderEnd) {
-			
-		}
-	}
 	
 	private TreeNode buildTree(List<Integer> inorderList, List<Integer> postorderList) {
 		if(postorderList.size() == 0) {
@@ -80,6 +72,7 @@ public class BuildTreeFromInOrderAndPostOrder {
 		}
 		return -1;
 	}
+	
 	
 	public static void main(String[] args) {
 		BuildTreeFromInOrderAndPostOrder x = new BuildTreeFromInOrderAndPostOrder();
