@@ -2,8 +2,10 @@ package edu.stonybrook.pnarendra.hard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 class TrieNode {
 	Character c;
@@ -17,24 +19,31 @@ class TrieNode {
 }
 
 public class WordBreak2 {
-	boolean stop = false;
 
 	public List<String> wordBreak(String s, List<String> wordDict) {
 		TrieNode root = new TrieNode(' ');
 		root.characterList = new HashMap<Character, TrieNode>();
+		Set<Integer> charSet = new HashSet<>();
 		// Prepare Trie Structure for fast lookup
 		for (String word : wordDict) {
 			TrieNode iter = root;
 			for (char a : word.toCharArray()) {
+				charSet.add(a - 'a');
 				// TrieNode temp = iter.characterList.getOrDefault(a, new TrieNode(a));
-				iter.characterList.putIfAbsent(a, new TrieNode(a));
-				iter = iter.characterList.get(a);
 				if (iter.characterList == null) {
 					iter.characterList = new HashMap<Character, TrieNode>();
 				}
+				iter.characterList.putIfAbsent(a, new TrieNode(a));
+				iter = iter.characterList.get(a);
 			}
 			iter.isEnd = true;
 			iter.word = word;
+		}
+		
+		for(char t : s.toCharArray()) {
+			if(!charSet.contains(t - 'a')) {
+				return new ArrayList<>();
+			}
 		}
 
 		List<String> answer = new ArrayList<String>();
@@ -52,33 +61,25 @@ public class WordBreak2 {
 			sb.setLength(len - 1);
 			answer.add(sb.toString());
 			return;
-		}else {
+		} else {
 			TrieNode iter = root;
 			int index = startIndex;
-			while (index < terminationIndex && iter != null && !stop) {
-				char temp = s.charAt(index);
-				if (!iter.characterList.containsKey(temp)) {
+			for (int i = startIndex; i < terminationIndex; i++) {
+				if (iter == null) {
 					break;
-				} else {
-					TrieNode n = iter.characterList.get(temp);
-					if (n == null) {
-						iter = n;
-						break;
-					} else if (n.isEnd && n.characterList != null) {
-						int len2 = sb.length();
-						sb.append(n.word);
-						sb.append(' ');
-						explore(root, sb, answer, s, index + 1, terminationIndex);
-						sb.setLength(len2);
-						// n.isEnd = false;
-						iter = n;
-						index++;
-
+				} else if (iter.characterList == null || iter.characterList.isEmpty()) {
+					break;
+				} else if (iter.characterList.containsKey(s.charAt(i))) {
+					iter = iter.characterList.get(s.charAt(i));
+					if (iter.isEnd) {
+						StringBuilder temp = new StringBuilder(sb);
+						temp.append(iter.word + " ");
+						explore(root, temp, answer, s, i + 1, terminationIndex);
 					} else {
-						iter = n;
-						index++;
+						continue;
 					}
-
+				} else {
+					break;
 				}
 			}
 			return;
@@ -86,46 +87,27 @@ public class WordBreak2 {
 
 	}
 
-//	public void explore(String s, StringBuilder sb, List<String> wordDict,List<String> answer) {
-//	if(s.length()==0) {
-//		sb.setLength(sb.length() - 1);
-//		answer.add(sb.toString());
-//		return;
-//	}else {
-//		int sbLength = sb.length();
-//		int len = sb.length();
-//		int len2 = s.length();
-//		for(int i = 1; i<= len2;i++) {
-//			if(wordDict.contains(s.substring(0, i))){
-//				sb.append(s.substring(0, i));
-//				sb.append(" ");
-//				explore(s.substring(i, len2),sb,wordDict,answer);
-//				sb.setLength(len);
-//			}
-//		}
-//	}
-//}
 
 	public static void main(String[] args) {
-		String s = "catsanddog";
-		List<String> wordDict = new ArrayList<String>();
-		wordDict.add("cat");
-		wordDict.add("cats");
-		wordDict.add("and");
-		wordDict.add("sand");
-		wordDict.add("dog");
-
-//		String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+//		String s = "catsanddog";
 //		List<String> wordDict = new ArrayList<String>();
-//		wordDict.add("a");
-//		wordDict.add("aa");
-//		wordDict.add("aaa");
-//		wordDict.add("aaaa");
-//		wordDict.add("aaaaa");
-//		wordDict.add("aaaaaa");
-//		wordDict.add("aaaaaaa");
-//		wordDict.add("aaaaaaaa");
-//		wordDict.add("aaaaaaaaa");
+//		wordDict.add("cat");
+//		wordDict.add("cats");
+//		wordDict.add("and");
+//		wordDict.add("sand");
+//		wordDict.add("dog");
+//
+		String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		List<String> wordDict = new ArrayList<String>();
+		wordDict.add("a");
+		wordDict.add("aa");
+		wordDict.add("aaa");
+		wordDict.add("aaaa");
+		wordDict.add("aaaaa");
+		wordDict.add("aaaaaa");
+		wordDict.add("aaaaaaa");
+		wordDict.add("aaaaaaaa");
+		wordDict.add("aaaaaaaaa");
 		new WordBreak2().wordBreak(s, wordDict);
 	}
 
