@@ -12,17 +12,20 @@ public class GenerateParentheses {
         backtrack(ans, "", 0, 0, n);
         return ans;
     }
+	
+	public void backtrack(List<String> ans, String str, int open, int close, int n) {
+		if(str.length() == 2 * n) {
+			ans.add(str);
+			return;
+		}
+		
+		if(open < n) {
+			backtrack(ans,str+"(",open + 1,close,n);
+		}
+		if(close < open) {
+			backtrack(ans,str+")",open,close + 1,n);
+		}
+	}
 
-    public void backtrack(List<String> ans, String cur, int open, int close, int max){
-        if (cur.length() == max * 2) {
-            ans.add(cur);
-            return;
-        }
-
-        if (open < max)
-            backtrack(ans, cur+"(", open+1, close, max);
-        if (close < open)
-            backtrack(ans, cur+")", open, close+1, max);
-    }
 
 }
