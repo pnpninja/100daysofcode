@@ -1,79 +1,54 @@
 package edu.stonybrook.pnarendra.medium;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class PrisonCellsAfterNDays {
 
 	public int[] prisonAfterNDays(int[] cells, int N) {
-		if (N == 0) {
-			return cells;
-		} else {
-			int iter = N;
-			while (iter > 0) {
-				// set to some numbers
-				// 0 - unoccupied old
-				// 1 - occupied old
-				// 2 - unoccupied old unoccupied next
-				// 3 - unoccupied old occupied next
-				// 4 - occupied old unoccupied next
-				// 5 - occupied old occupied next
 
-				for (int i = 1; i < cells.length - 1; i++) {
-					if ((cells[i - 1] == 0 || 
-						cells[i - 1] == 2 || 
-						cells[i - 1] == 3)
-						&& 
-						(cells[i + 1] == 0 || 
-						cells[i + 1] == 2 || 
-						cells[i + 1] == 3)) {
-							if (cells[i] == 0) {
-								cells[i] = 3;
-							} else {
-								cells[i] = 5;
-							}
-						}else if((cells[i - 1] == 1 || 
-								cells[i - 1] == 4 || 
-								cells[i - 1] == 5)
-								&& 
-								(cells[i + 1] == 1 || 
-								cells[i + 1] == 4 || 
-								cells[i + 1] == 5)) {
-							if (cells[i] == 0) {
-								cells[i] = 3;
-							} else {
-								cells[i] = 5;
-							}
-							
-						}else {
-							if(cells[i] == 1) {
-								cells[i] = 4;
-							}else {
-								cells[i] = 2;
-						}
+        HashMap<Integer, Integer> seen = new HashMap<>();
+        boolean isFastForwarded = false;
 
-					}
-				}
-				if (iter == N) {
-					cells[0] = 0;
-					cells[cells.length - 1] = 0;
-				}
-				
-				//format array to new values
-				for(int i = 1; i < cells.length - 1; i++) {
-					if(cells[i] == 2) {
-						cells[i] = 0;
-					}else if(cells[i] == 3) {
-						cells[i] = 1;
-					}else if(cells[i] == 4) {
-						cells[i] = 0;
-					}else if(cells[i] == 5) {
-						cells[i] = 1;
-					}
-				}
-				iter--;
-			}
-			return cells;
-		}
-	}
+        // step 1). convert the cells to bitmap
+        int stateBitmap = 0x0;
+        for (int cell : cells) {
+            stateBitmap <<= 1;
+            stateBitmap = (stateBitmap | cell);
+        }
+
+        // step 2). run the simulation with hashmap
+        while (N > 0) {
+            if (!isFastForwarded) {
+                if (seen.containsKey(stateBitmap)) {
+                    // the length of the cycle is seen[state_key] - N
+                    N %= seen.get(stateBitmap) - N;
+                    isFastForwarded = true;
+                } else
+                    seen.put(stateBitmap, N);
+            }
+            // check if there is still some steps remained,
+            // with or without the fast forwarding.
+            if (N > 0) {
+                N -= 1;
+                stateBitmap = this.nextDay(stateBitmap);
+            }
+        }
+
+        // step 3). convert the bitmap back to the state cells
+        int ret[] = new int[cells.length];
+        for (int i = cells.length - 1; i >= 0; i--) {
+            ret[i] = (stateBitmap & 0x1);
+            stateBitmap = stateBitmap >> 1;
+        }
+        return ret;
+    }
+
+    protected int nextDay(int stateBitmap) {
+        stateBitmap = ~(stateBitmap << 1) ^ (stateBitmap >> 1);
+        // set the head and tail to zero
+        stateBitmap = stateBitmap & 0x7e;
+        return stateBitmap;
+    }
 
 }

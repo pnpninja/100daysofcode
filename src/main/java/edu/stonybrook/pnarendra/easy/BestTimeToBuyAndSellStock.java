@@ -1,6 +1,6 @@
-package edu.stonybrook.pnarendra.medium;
+package edu.stonybrook.pnarendra.easy;
 
-public class StockMaxProfit1 {
+public class BestTimeToBuyAndSellStock {
 	public int maxProfit(int[] prices) {
         int min = Integer.MAX_VALUE;
         int profit = 0;

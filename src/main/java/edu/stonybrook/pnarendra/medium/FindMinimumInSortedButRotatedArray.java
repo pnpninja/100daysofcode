@@ -3,7 +3,7 @@ package edu.stonybrook.pnarendra.medium;
 public class FindMinimumInSortedButRotatedArray {
 	
 	public int findMin(int[] nums) {
-        return findMinHelper(nums, 0, nums.length);
+        return findMinHelper(nums, 0, nums.length - 1);
     }
 	
 	private int findMinHelper(int[] nums, int start, int end) {
