@@ -49,9 +49,7 @@ public class CourseSchedule2 {
 				return true;
 			}
 		}
-		return false;
-		
-		
+		return false;		
 	}
 	
 	private boolean isCyclicUtil(int i, Course[] courseInfo, boolean[] recStack, boolean[] visited) {

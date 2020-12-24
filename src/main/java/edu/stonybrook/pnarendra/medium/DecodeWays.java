@@ -19,7 +19,7 @@ public class DecodeWays {
         		memo[i] = memo[i] + memo[i - 2];
         	}
         }
-        return memo[s.length()];
+        return memo[s.length()];																																																				
     }
 	
 

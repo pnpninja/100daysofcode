@@ -15,7 +15,7 @@ class Rock{
 }
 public class KnapsackProblem01 {
 	
-	static int knapSack( int W, int wt[], int val[], int n) {
+	static int knapSack(int W, int wt[], int val[], int n) {
 		Rock[] rocks = new Rock[n];
 		for(int i = 0; i < n; i++) {
 			rocks[i] = new Rock(wt[i],val[i]);
@@ -49,11 +49,12 @@ public class KnapsackProblem01 {
 	}
 	
 	public static void main(String[] args) {
-		int[] wt = {1,3,4,5};
-		int[] val = {1,4,5,7};
-		int W =7;
+		int[] wt = {2,3,1,2};
+		int[] val = {3,4,1,3};
+		int W =5;
 		int n = 4;
-		knapSack(W, wt, val, n);
+		System.out.println(knapSack(W, wt, val, n));
+
 	}
 
 }
