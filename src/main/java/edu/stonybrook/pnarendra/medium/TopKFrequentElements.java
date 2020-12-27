@@ -62,37 +62,5 @@ public class TopKFrequentElements {
         
     }
 	
-	public int[] topKFrequent2(int[] nums, int k) {
-        Map<Integer,MyObject> map = new HashMap<>();
-        PriorityQueue<MyObject> pq = new PriorityQueue<>(new Comparator<MyObject>() {
-
-			@Override
-			public int compare(MyObject o1, MyObject o2) {
-				return new Integer(o1.count).compareTo(o2.count);
-			}
-        	
-        });
-        
-        for(int num : nums) {
-        	if(!map.containsKey(num)) {
-        		MyObject newObj = new MyObject(num);
-        		map.put(num, newObj);
-        		if(pq.size() < k) {
-        			pq.add(newObj);
-        		}else {
-        			MyObject minEle = pq.peek();
-        			if(newObj.count > minEle.count) {
-        				pq.poll();
-        				pq.add(newObj);
-        			}
-        		}
-        	}else {
-        		MyObject newObj = map.get(num);
-        		newObj.count++;
-        	}
-        }
-   
-        
-    }
 
 }
