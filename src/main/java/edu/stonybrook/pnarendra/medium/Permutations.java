@@ -16,17 +16,17 @@ public class Permutations {
 	
 	private void perform(List<Integer> nums, List<Integer> tempList, List<List<Integer>> answers) {
 		if(nums.size() == 0) {
-			answers.add(tempList);
+			answers.add(new ArrayList<Integer>(tempList));
 			return;
 		}
 		
 		for(int i = 0; i < nums.size(); i++) {
-			List<Integer> tempList2 = new ArrayList<Integer>(tempList);
 			int t = nums.get(i);
-			tempList2.add(t);
+			tempList.add(t);
 			nums.remove(i);
-			perform(nums, tempList2, answers);
+			perform(nums, tempList, answers);
 			nums.add(i, t);
+			tempList.remove(tempList.size()-1);
 		}
 	}
 	
@@ -34,6 +34,9 @@ public class Permutations {
 		Permutations g = new Permutations();
 		int[] x = new int[] {1,2,3};
 		List<List<Integer>> gg = g.permute(x);
+		for(List<Integer> gf : gg) {
+			System.out.println(gf.toString());
+		}
 		System.out.println("Done");
 	}
 

@@ -12,7 +12,6 @@ public class RemoveDuplicatesFromSortedArray2 {
         		nums[ind++]=nums[i];
         		secondEntry = false;
         	}else {
-        		secondEntry = false;
         		continue;
         	}
         }
