@@ -68,7 +68,7 @@ public class FirstLastElementSortedArray {
 		}else {
 			int mid = (start + end) / 2;
 			if(nums[mid] == target) {
-				if(mid == nums.length) {
+				if(mid == nums.length-1) {
 					return mid;
 				}else {
 					return binarySearchLastOccurence(nums, target, mid, end);
